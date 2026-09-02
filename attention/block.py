@@ -8,7 +8,7 @@ score , attention(i) --> (B, H , block_size , (num_blocks+1)*block_size)
 causal mask needed to prevent score computing for the earlier values in a block with further ones in same block
 
 """
-class SlidingWindowAttention(nn.Module):
+class SlparseBlockAttention(nn.Module):
     def __init__(self, d, n_heads, block_size,num_blocks):
         super().__init__()
         self.d = d
@@ -47,8 +47,8 @@ class SlidingWindowAttention(nn.Module):
             scores = qi @ ki.transpose(-2, -1)
 
             scores = scores / (self.head_dim ** 0.5)
-            q_indices = torch.arange(i, end, device=x.device)[:, None] #(block,size , 1) size column vector
-            k_indices = torch.arange(start, end, device=x.device)[None, :] #(1, block_size*(num_blocks+1)) size row vector 
+            q_indices = torch.arange(i, end, device=x.device).unsqueeze(1) #(block,size , 1) size column vector
+            k_indices = torch.arange(start, end, device=x.device).unsqueeze(0) #(1, block_size*(num_blocks+1)) size row vector 
             allowed = k_indices <= q_indices
             scores = scores.masked_fill(~allowed, float("-inf"))
 
