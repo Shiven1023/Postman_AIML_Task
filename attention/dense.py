@@ -6,7 +6,6 @@ q , k ,v --> (B,H ,N , d )9after permutation) (N--> seq_len)
 attention --> (B, H , seq_len , seq_len)
 mask --> (1 , 1 , seq_len , seq_len) (broadcasted)
 score --> (B , H , seq_len , d) (attention @ v)
-
 """
 class MultiHeadAttention(nn.Module):
     def __init__(self, d, n_heads):
@@ -19,7 +18,7 @@ class MultiHeadAttention(nn.Module):
         self.in_proj = nn.Linear(d, 3 * d)
         self.out_proj = nn.Linear(d, d)
 
-    def forward(self, x):
+    def forward(self, x, mask = None):
         # x: (B, N, d)
         B, N, d = x.shape
 
@@ -37,12 +36,8 @@ class MultiHeadAttention(nn.Module):
         k_t = k.transpose(-2, -1) 
         attention = q @ k_t
         attention = attention / (self.head_dim ** 0.5)
-        
-        mask = torch.triu(
-            torch.ones(N, N, device=x.device, dtype=torch.bool), #causal mask (broadcasts across B ,H)
-            diagonal=1
-        )
-        attention = attention.masked_fill(mask, float("-inf"))
+        if mask is not None:
+            attention = attention.masked_fill(mask, float("-inf"))
         attention = torch.softmax(attention, dim=-1)
         score = attention @ v 
 

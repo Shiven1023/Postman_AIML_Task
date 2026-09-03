@@ -8,7 +8,7 @@ score , attention(i) --> (B, H , block_size , (num_blocks+1)*block_size)
 causal mask needed to prevent score computing for the earlier values in a block with further ones in same block
 
 """
-class SlparseBlockAttention(nn.Module):
+class SparseBlockAttention(nn.Module):
     def __init__(self, d, n_heads, block_size,num_blocks):
         super().__init__()
         self.d = d
