@@ -10,7 +10,7 @@ for random choose num_random_blocks number of random blocks from the avaiable bl
 maintaining "used" for all blocks already used for querying 
 
 """
-class SparseBlockAttention(nn.Module):
+class BigBirdSparse(nn.Module):
     def __init__(self, d, n_heads, block_size,num_blocks, num_random_blocks):
         super().__init__()
         self.d = d

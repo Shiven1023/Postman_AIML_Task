@@ -14,7 +14,7 @@ class SlidingWindowAttention(nn.Module):
         self.d = d
         self.n_heads = n_heads
         self.head_dim = d // n_heads
-        slef.window_size = window_size
+        self.window_size = window_size
         assert d % n_heads == 0 
 
         self.in_proj = nn.Linear(d, 3 * d)
@@ -36,7 +36,7 @@ class SlidingWindowAttention(nn.Module):
         v = v.permute(0, 2, 1, 3)
         
         outputs = []
-        for i int range(N):
+        for i in range(N):
             start = max(0, i - self.window_size + 1)
             qi = q[: , : ,i: i+1,:]
             ki = k[:, :, start:i+1, :]
