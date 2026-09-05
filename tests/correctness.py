@@ -78,12 +78,7 @@ def build_bigbird_pattern(N,block_size,num_local_blocks,num_random_blocks,seed=4
 
 # Turn BigBird connectivity into an N x N  mask
 
-def make_bigbird_mask(
-    N,
-    block_size,
-    pattern,
-    device
-):
+def make_bigbird_mask(N,block_size,pattern,device):
     mask = torch.ones(N, N,dtype=torch.bool,device=device)
 
     for block_idx, used_blocks in pattern.items():
