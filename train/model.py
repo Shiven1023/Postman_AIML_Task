@@ -190,7 +190,7 @@ if __name__ == "__main__":
     d = 128
     n_heads = 4
     learning_rate = 3e-4
-    steps = 500
+    steps = 1000
     window_size = 64
     block_size = 32
     num_local_blocks = 1
